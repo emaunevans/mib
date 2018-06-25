@@ -8,7 +8,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Redirect,
+  Redirect, Switch,
   withRouter
 } from 'react-router-dom'
 
@@ -30,12 +30,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     Auth.isUserAuthenticated() ? (
       <Component {...props} {...rest} />
     ) : (
-      <Redirect to={{
-        pathname: '/',
-        state: { from: props.location }
-      }}/>
-    )
-  )}/>
+        <Redirect to={{
+          pathname: '/',
+          state: { from: props.location }
+        }} />
+      )
+  )} />
 )
 
 const LoggedOutRoute = ({ component: Component, ...rest }) => (
@@ -44,17 +44,17 @@ const LoggedOutRoute = ({ component: Component, ...rest }) => (
       <Redirect to={{
         pathname: '/',
         state: { from: props.location }
-      }}/>
+      }} />
     ) : (
-      <Component {...props} {...rest} />
-    )
-  )}/>
+        <Component {...props} {...rest} />
+      )
+  )} />
 )
 
 const PropsRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => (
     <Component {...props} {...rest} />
-  )}/>
+  )} />
 )
 
 class Main extends Component {
@@ -91,20 +91,20 @@ class Main extends Component {
                   <Link to="/logout">Log out</Link>
                 </div>
               ) : (
-                <div className="top-bar-right">
-                  <Link to="/login">Log in</Link>
-                  <Link to="/signup">Sign up</Link>
-                </div>
-              )}
+                  <div className="top-bar-right">
+                    <Link to="/login">Log in</Link>
+                    <Link to="/signup">Sign up</Link>
+                  </div>
+                )}
 
             </div>
 
             <PropsRoute exact path="/" component={HomePage} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-            <PrivateRoute path="/dashboard" component={DashboardPage}/>
-            <PrivateRoute path="/messages" component={MessagePage}/>
+            <PrivateRoute path="/dashboard" component={DashboardPage} />
+            <PrivateRoute path="/messages" component={MessagePage} />
             <LoggedOutRoute path="/login" component={LoginPage} toggleAuthenticateStatus={() => this.toggleAuthenticateStatus()} />
-            <LoggedOutRoute path="/signup" component={SignUpPage}/>
-            <Route path="/logout" component={LogoutFunction}/>
+            <LoggedOutRoute path="/signup" component={SignUpPage} />
+            <Route path="/logout" component={LogoutFunction} />
             <Footer />
           </div>
         </Router>
